@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Senior project management</title>
+    <link rel="stylesheet" href="../styles/bootstrap.min.css">
+    <script src="../scripts/jquery-3.3.1.min.js"></script>
+    <script src="../scripts/popper.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <input type="text" class="form-control my-2" placeholder="Username" id="txtUsername">
+        <input type="password" class="form-control mb-2" placeholder="Password" id="txtPassword">
+
+        <button id="btnSignIn" class="btn btn-primary my-2">Sign in</button>
+        <button id="btnSignUp" class="btn btn-secondary">Sign up</button>
+
+        <!-- alert dialog for wrong login -->
+        <div class="alert alert-danger" style="display: none">
+            <span>Wrong login</span>
+        </div>
+
+        <!-- alert dialog for sucessful sign up -->
+        <div class="alert alert-success" style="display: none">
+            <span>Sign Up Complete</span>
+        </div>
+
+        <!------------------------- Modal ------------------>
+        <div class="modal" id="userModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Sign Up</h4>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <input type="text" class="form-control my-2" placeholder="Username" id="txtUsernameSignUp">
+                        <input type="password" class="form-control mb-2" placeholder="Password" id="txtPasswordSignUp">
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button id="btnOK" class="btn btn-success" data-dismiss="modal">OK</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
