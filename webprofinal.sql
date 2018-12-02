@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 30, 2018 at 10:59 AM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 5.6.38
+-- Generation Time: Dec 02, 2018 at 11:06 AM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -108,14 +108,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`ID`, `USERNAME`, `PASSWORD`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `ROLE`) VALUES
-(1, 'Admin', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Jenny', 'Dode', 'example@mmail.com', 0),
-(2, 'Lecturer01', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Jeck', 'Savage', 'example1@mmail.com', 1),
-(3, 'Lecturer02', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Pate', 'paul', 'example2@mmail.com', 1),
-(4, 'Lecturer03', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Sobrina', 'Dode', 'example3@mmail.com', 1),
-(5, 'Lecturer04', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Martin', 'Lee', 'example4@mmail.com', 1),
-(6, 'Student1', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Conner', 'Savage', 'example5@mmail.com', 2),
-(7, 'Student2', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Laura ', 'Hickey', 'example6@mmail.com', 2),
-(8, 'Student3', '$2y$10$3a8p5UKeJ8wu2ALAKibOG.2Os7gYHcejHWP9ApF1B8tPLrR5F3146', 'Pat', 'Hickey', 'example7@mmail.com', 2);
+(1, 'Admin', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Jenny', 'Dode', 'example@mmail.com', 0),
+(2, 'Lecturer01', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Jeck', 'Savage', 'example1@mmail.com', 1),
+(3, 'Lecturer02', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Pate', 'paul', 'example2@mmail.com', 1),
+(4, 'Lecturer03', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Sobrina', 'Dode', 'example3@mmail.com', 1),
+(5, 'Lecturer04', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Martin', 'Lee', 'example4@mmail.com', 1),
+(6, 'Student1', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Conner', 'Savage', 'example5@mmail.com', 2),
+(7, 'Student2', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Laura ', 'Hickey', 'example6@mmail.com', 2),
+(8, 'Student3', '$2b$10$2yyUUWuVtVvaVF2X7TZIZu1zGGwvmFO5dfXZ5OmZfoQkQLKloT.Kq', 'Pat', 'Hickey', 'example7@mmail.com', 2);
 
 --
 -- Indexes for dumped tables
@@ -159,7 +159,7 @@ ALTER TABLE `comitee`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `student`
