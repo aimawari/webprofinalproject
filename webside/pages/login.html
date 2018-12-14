@@ -17,9 +17,16 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    
+
+    <!-- jquery validate -->
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/validate_localization/messages_th.min.js"></script>
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
@@ -55,10 +62,17 @@
     <script>
 
         $(document).ready(function () {
+            $('.modal').on('hidden.bs.modal', function () {
+                $(this).find('form')[0].reset();
+                var validator = $(this).find('form').validate();
+                validator.resetForm();
+            });
             $("#Login").click(function () {
+                
+                if($('form#login_form').valid()){
                 let username = $('#user').val();
                 let password = $('#pass').val();
-
+                
                 $.ajax({
                     method: "POST",
                     url: "http://localhost:8088/login",
@@ -75,16 +89,18 @@
                 }).fail(function (xhr, state) {
                     alert("Login Fail");
                 });
+                }
             });
 
-            $("#register").click(function () {
-                $('#modalEdit').modal('show');
+            $("a#register_modal").click(function () {
+                $('#modalregister').modal('show');
             });
             $("#forgotPassword").click(function () {
                 alert("This Function is Coming Soon !!");
             });
             
             $("#btnAddLecturer").click(function () {
+                if($('form#register').valid()){
                 let firstname = $("#lecturerFirstname").val();
                 let lastname = $("#lecturerLastname").val();
                 let email = $("#lecturerEmail").val();
@@ -102,8 +118,53 @@
                 }).fail(function (xhr, state) {
                     alert("Adding Fail");
                 });
+                }
             });
+            formValid()
         });
+        this.formValid = function() {
+              console.log('val');
+              $('form#login_form').validate({
+                    ignore: "",
+                    rules: { //mapping input field name with data required 
+                        username: {
+                            required: true,
+
+                        },
+                        password: {
+                            required: true,
+                        },
+                    },
+                   
+                    
+                });
+		        $('form#register').validate({
+                    ignore: "",
+                    rules: { //mapping input field name with data required 
+                        lecturerUsername: {
+                            required: true,
+
+                        },
+                        lecturerFirstname: {
+                            required: true,
+                        },
+                        lecturerEmail: {
+                            required: true,
+                            email: true
+                        },
+                        lecturerLastname: {
+                            required: true,
+                        
+                        },
+                        lecturerPassword: {
+                            required: true,
+                        
+                        }
+                    },
+            
+                    
+                });
+            };
     </script>
 </head>
 
@@ -122,8 +183,9 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        
                             <fieldset>
+                            <form id="login_form" >
                                 <div class="form-group">
                                     <input id="user" class="form-control" placeholder="Username" name="username" type="text"
                                         autofocus>
@@ -139,25 +201,27 @@
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <a id="Login" class="btn btn-lg btn-success btn-block">LOGIN</a>
+                            </form>
                             </fieldset>
                             <div style="margin-top: 10px; margin-left: 20px">
                                 <div class="col-md-6 text-left">
-                                    <a href="#" id="register">sign up</a>
+                                    <a href="#" id="register_modal">sign up</a>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <a id="forgotPassword" href="#">forget password?</a>
                                 </div>
                             </div>
-                        </form>
+                       
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal Register -->
-        <div class="modal fade" id="modalEdit">
+        <div class="modal fade" id="modalregister">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <form id="register">
                     <div class="modal-header">
                         <div class="row">
                             <div class="col-md-12">
@@ -180,7 +244,7 @@
                                 <span class="glyphicon glyphicon-user" aria-hidden="true">
                                 </span>
                             </span>
-                            <input id="lecturerUsername" class="form-control" placeholder="Your Username">
+                            <input id="lecturerUsername" name="lecturerUsername"  class="form-control" placeholder="Your Username">
                         </div>
 
                         <p style="font-weight: bold; margin-top: 20px">Youe Email</p>
@@ -190,7 +254,7 @@
                                     @
                                 </span>
                             </span>
-                            <input id="lecturerEmail" class="form-control" placeholder="Email@example.com">
+                            <input id="lecturerEmail" name="lecturerEmail" class="form-control" placeholder="Email@example.com">
                         </div>
 
                         <p style="font-weight: bold;  margin-top: 20px">Your password</p>
@@ -199,7 +263,7 @@
                                 <span class="glyphicon glyphicon-lock" aria-hidden="true">
                                 </span>
                             </span>
-                            <input id="lecturerPassword" class="form-control" placeholder="Your password" type="password">
+                            <input id="lecturerPassword" name="lecturerPassword" class="form-control" placeholder="Your password" type="password">
                         </div>
 
                         <div class="input-group col-md-12">
@@ -210,7 +274,7 @@
                                         <span class="glyphicon glyphicon-user" aria-hidden="true">
                                         </span>
                                     </span>
-                                    <input id="lecturerFirstname" class="form-control" placeholder="First Name" type="text">
+                                    <input id="lecturerFirstname" name="lecturerFirstname" class="form-control" placeholder="First Name" type="text">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -220,7 +284,7 @@
                                         <span class="glyphicon glyphicon-user" aria-hidden="true">
                                         </span>
                                     </span>
-                                    <input id="lecturerLastname" class="form-control" placeholder="Last Name" type="text">
+                                    <input id="lecturerLastname" name="lecturerLastname" class="form-control" placeholder="Last Name" type="text">
                                 </div>
                             </div>
                         </div>
@@ -231,22 +295,13 @@
                         <button id="btnAddLecturer" type="button" class="btn btn-primary">SUBMIT</button>
                     </div>
                 </div>
+            </form>
             </div>
         </div>
     </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
+    
 
 </body>
 
