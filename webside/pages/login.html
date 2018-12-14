@@ -28,6 +28,9 @@
     <script src="../js/jquery.validate.min.js"></script>
     <script src="../js/validate_localization/messages_th.min.js"></script>
 
+    <script src="../js/sweetalert2.all.min.js"></script>
+    <link href="../js/sweetalert2.min.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
@@ -87,7 +90,12 @@
                         window.location = "Student.html";
                     }
                 }).fail(function (xhr, state) {
-                    alert("Login Fail");
+                    Swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: "Login Fail",
+                    });
+                
                 });
                 }
             });
@@ -96,7 +104,7 @@
                 $('#modalregister').modal('show');
             });
             $("#forgotPassword").click(function () {
-                alert("This Function is Coming Soon !!");
+                Swal("This Function is Coming Soon !!");
             });
             
             $("#btnAddLecturer").click(function () {
@@ -113,10 +121,14 @@
 
                     data: { username: username, password: password, firstname: firstname, lastname: lastname, email: email }
                 }).done(function (data, state, xhr) {
-                    alert(data);
+                   
                     $('#modalAddLecturer').modal('hide');
                 }).fail(function (xhr, state) {
-                    alert("Adding Fail");
+                    Swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: "Adding Fail",
+                    });
                 });
                 }
             });
