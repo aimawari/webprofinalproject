@@ -10,7 +10,19 @@ let app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(function (req, res, next) {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // Pass to next layer of middleware
+    next();
+  });
 app.use("/scripts", express.static(__dirname + "/scripts"));
 app.use("/styles", express.static(__dirname + "/styles"));
 
@@ -63,13 +75,13 @@ app.post("/login", function (req, res) {
                     console.log(result[0])
                     switch (result[0].role) {
                         case 0:
-                            res.send("Login::Admin");
+                            res.send("Admin");
                             break;
                         case 1:
-                            res.send("Login::Lecturer");
+                            res.send("Lecturer");
                             break;
                         case 2:
-                            res.send("Login::Student");
+                            res.send("Student");
                             break;
                     }
                 }
@@ -104,7 +116,7 @@ app.get("/project", function (req, res) {
 //ดึงข้อมูลของprojectตามid
 app.get("/project/:id", function (req, res) {
     let id = req.params.id;
-    let sql = "SELECT id, projectname, (SELECT firstname FROM user WHERE id = p.advisor) AS advisor, (SELECT firstname FROM user WHERE id = p.coadvisor) AS coadvisor, status FROM project p WHERE id = ?";
+    let sql = "SELECT id, projectname, (SELECT firstname FROM user WHERE id = p.advisor) AS advisor,  p.advisor AS idadvisor,p.coadvisor AS idcoadvisor, (SELECT firstname FROM user WHERE id = p.coadvisor) AS coadvisor, status FROM project p WHERE id = ?";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {
             console.log(err.message);
@@ -145,7 +157,7 @@ app.get("/project/:id/studentlist", function (req, res) {
 app.post("/project/:id/addstudent", function (req, res) {
     let idproject = req.params.id;
     let idstudent = req.body.idstudent;
-    let sql = "INSERT INTO student(id,idstudent,idproject) VALUES (NULL,?,?)";
+    let sql = "INSERT INTO student(idstudent,idproject) VALUES (?,?)";
     con.query(sql, [idstudent,idproject], function (err, result, fields) {
         if (err) {
             console.log(err.message);
@@ -186,7 +198,7 @@ app.get("/project/:id/comiteelist", function (req, res) {
 app.post("/project/:id/addcomitee", function (req, res) {
     let projectid = req.params.id;
     let comiteeid = req.body.comiteeid;
-    let sql = "INSERT INTO comitee(id,userid,projectid) VALUES (NULL,?,?)";
+    let sql = "INSERT INTO comitee(userid,projectid) VALUES (?,?)";
     con.query(sql, [comiteeid,projectid], function (err, result, fields) {
         if (err) {
             console.log(err.message);
@@ -217,9 +229,22 @@ app.post("/project", function (req, res) {
             res.status(400).end();
             return;
         }
+        let sql = "SELECT id FROM project WHERE projectname=?";
 
-        res.send("Success");
+        con.query(sql, [projectname], function (err, result, fields) {
+            if (err) {
+                console.log(err.message);
+                res.status(400).end();
+                return;
+            }
+            res.json({message:"Success",idProject:result[0].id});
+            
+        });
+        
     });
+   
+
+    
 });
 
 //แก้ไขprojectตามid
@@ -245,7 +270,7 @@ app.post("/project/:id", function (req, res) {
 //------------------ Lecturer ---------------------//
 //ดึงข้อมูลLacturerทั้งหมด
 app.get("/lecturer", function (req, res) {
-    let sql = "SELECT username, firstname, lastname, email FROM user WHERE role = 1";
+    let sql = "SELECT id, username, firstname, lastname, email FROM user WHERE role = 1";
     con.query(sql, function (err, result, fields) {
         if (err) {
             console.log(err.message);
@@ -338,7 +363,7 @@ app.post("/lecturer/:id", function (req, res) {
 //------------------ Student ---------------------//
 //ดึงstudentทั้งหมดออกมาจากuser
 app.get("/student", function (req, res) {
-    let sql = "SELECT firstname, lastname, email FROM user WHERE role = 2";
+    let sql = "SELECT id, firstname, lastname, email FROM user WHERE role = 2";
     con.query(sql, function (err, result, fields) {
         if (err) {
             console.log(err.message);
