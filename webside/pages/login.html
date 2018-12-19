@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    
+
+    <!-- jquery validate -->
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/validate_localization/messages_th.min.js"></script>
+
+    <script src="../js/sweetalert2.all.min.js"></script>
+    <link href="../js/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #wrapper {
+            min-height: 100%;
+        }
+
+        .center {
+            margin: auto;
+            width: 50%;
+        }
+        .brColor{
+            color : black;
+        }   
+    </style>
+    <script>
+
+        $(document).ready(function () {
+            $('.modal').on('hidden.bs.modal', function () {
+                $(this).find('form')[0].reset();
+                var validator = $(this).find('form').validate();
+                validator.resetForm();
+            });
+            $("#Login").click(function () {
+                
+                if($('form#login_form').valid()){
+                let username = $('#user').val();
+                let password = $('#pass').val();
+                
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:8088/login",
+
+                    data: { username: username, password: password }
+                }).done(function (data, state, xhr) {
+                    console.log(data)
+                    if (data == "Admin") {
+                        window.location = "Admin.html";
+                    } else if (data == "Lecturer") {
+                        window.location = "Lecturer.html";
+                    } else if (data == "Student") {
+                        window.location = "Student.html";
+                    }
+                }).fail(function (xhr, state) {
+                    Swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: "Login Fail",
+                    });
+                
+                });
+                }
+            });
+
+            $("a#register_modal").click(function () {
+                $('#modalregister').modal('show');
+            });
+            $("#forgotPassword").click(function () {
+                Swal("This Function is Coming Soon !!");
+            });
+            
+            $("#btnAddLecturer").click(function () {
+                if($('form#register').valid()){
+                let firstname = $("#lecturerFirstname").val();
+                let lastname = $("#lecturerLastname").val();
+                let email = $("#lecturerEmail").val();
+                let username = $("#lecturerUsername").val();
+                let password = $("#lecturerPassword").val();
+
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:8088/register",
+
+                    data: { username: username, password: password, firstname: firstname, lastname: lastname, email: email }
+                }).done(function (data, state, xhr) {
+                   
+                    $('#modalAddLecturer').modal('hide');
+                }).fail(function (xhr, state) {
+                    Swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: "Adding Fail",
+                    });
+                });
+                }
+            });
+            formValid()
+        });
+        this.formValid = function() {
+              console.log('val');
+              $('form#login_form').validate({
+                    ignore: "",
+                    rules: { //mapping input field name with data required 
+                        username: {
+                            required: true,
+
+                        },
+                        password: {
+                            required: true,
+                        },
+                    },
+                   
+                    
+                });
+		        $('form#register').validate({
+                    ignore: "",
+                    rules: { //mapping input field name with data required 
+                        lecturerUsername: {
+                            required: true,
+
+                        },
+                        lecturerFirstname: {
+                            required: true,
+                        },
+                        lecturerEmail: {
+                            required: true,
+                            email: true
+                        },
+                        lecturerLastname: {
+                            required: true,
+                        
+                        },
+                        lecturerPassword: {
+                            required: true,
+                        
+                        }
+                    },
+            
+                    
+                });
+            };
+    </script>
+</head>
+
+<body background="../image/hd.jpg">
+
+    <div class="container">
+
+        <div class="row">
+            <div style="margin-top:5%">
+                <h3 class="center text-center" style="color:cornsilk;font-weight: bold; font-size: 30px;  text-shadow: 3px 4px black;">Senior Project Management System</h3>
+            </div>
+            <div class="col-md-4 col-md-offset-4">
+
+                <div class="login-panel panel panel-default" style="align-items: center;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                            <fieldset>
+                            <form id="login_form" >
+                                <div class="form-group">
+                                    <input id="user" class="form-control" placeholder="Username" name="username" type="text"
+                                        autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input id="pass" class="form-control" placeholder="Password" name="password" type="password"
+                                        value="">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <a id="Login" class="btn btn-lg btn-success btn-block">LOGIN</a>
+                            </form>
+                            </fieldset>
+                            <div style="margin-top: 10px; margin-left: 20px">
+                                <div class="col-md-6 text-left">
+                                    <a href="#" id="register_modal">sign up</a>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <a id="forgotPassword" href="#">forget password?</a>
+                                </div>
+                            </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Register -->
+        <div class="modal fade" id="modalregister">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="register">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6 text-left">
+                                    <h4 class="modal-title" id="modelTitleId" style="font-weight: bold">Registration</h4>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+
+                        <p style="font-weight: bold">Your username</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true">
+                                </span>
+                            </span>
+                            <input id="lecturerUsername" name="lecturerUsername"  class="form-control" placeholder="Your Username">
+                        </div>
+
+                        <p style="font-weight: bold; margin-top: 20px">Youe Email</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span aria-hidden="true" style="font-weight: bold">
+                                    @
+                                </span>
+                            </span>
+                            <input id="lecturerEmail" name="lecturerEmail" class="form-control" placeholder="Email@example.com">
+                        </div>
+
+                        <p style="font-weight: bold;  margin-top: 20px">Your password</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-lock" aria-hidden="true">
+                                </span>
+                            </span>
+                            <input id="lecturerPassword" name="lecturerPassword" class="form-control" placeholder="Your password" type="password">
+                        </div>
+
+                        <div class="input-group col-md-12">
+                            <div class="col-md-6">
+                                <p style="font-weight: bold;  margin-top: 20px">First Name</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true">
+                                        </span>
+                                    </span>
+                                    <input id="lecturerFirstname" name="lecturerFirstname" class="form-control" placeholder="First Name" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <p style="font-weight: bold;  margin-top: 20px">Last Name</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true">
+                                        </span>
+                                    </span>
+                                    <input id="lecturerLastname" name="lecturerLastname" class="form-control" placeholder="Last Name" type="text">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+                        <button id="btnAddLecturer" type="button" class="btn btn-primary">SUBMIT</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    
+
+</body>
+
+</html>
