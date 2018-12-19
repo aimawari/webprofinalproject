@@ -82,6 +82,7 @@
 
                     data: { username: username, password: password }
                 }).done(function (data, state, xhr) {
+                    console.log(data)
                     if (data == "Admin") {
                         window.location = "Admin.html";
                     } else if (data == "Lecturer") {

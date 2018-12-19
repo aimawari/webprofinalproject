@@ -72,7 +72,21 @@
         var tableUser;
         let studentObj = [];
         var dataHolder = {projectName:'',student:[],advisor:'',coadvisor:'',comittee:[]};
+        var idProjectURL = 0;
         $(document).ready(function () {
+            var params = {};
+
+            if (location.search) {
+                var parts = location.search.substring(1).split('&');
+
+                for (var i = 0; i < parts.length; i++) {
+                    var nv = parts[i].split('=');
+                    if (!nv[0]) continue;
+                    params[nv[0]] = nv[1] || true;
+                }
+            }
+            idProjectURL = params.id;
+            onProjectData(idProjectURL)
             onLoadPage();
             getLecturer();
             $("#btnTest").click(function () {
@@ -85,10 +99,27 @@
                 window.location = "Student.html"
             });
         });
+        this.onProjectData = function () {
+            $.ajax({
+                url: 'http://localhost:8088/project/'+idProjectURL,
+                type: 'get',
+                cache: false,
+                datatype: "json",
+                success: function (response) {
+                    console.log(response); 
+                    $('#projectname_txt').val(response[0].projectname)
+                    dataHolder.advisor=response[0].idadvisor
+                    dataHolder.coadvisor=response[0].idcoadvisor
+                },
+                error: function (response) {
+                    alert("can not load the project list table")
+                }
+            });
+        }
 
         this.addProject = function () {
             $.ajax({
-                url: 'http://localhost:8088/project',
+                url: 'http://localhost:8088/project/'+idProjectURL,
                 type: 'post',
                 cache: false,
                 data : {projectname:dataHolder.projectName,
@@ -98,16 +129,16 @@
                     },
                 success: function (response) {
                     try {
-                        for (let i = 0; i < dataHolder.student.length; i++) {
-                            self.addStudentProject(response.idProject,dataHolder.student[i].id)                        
-                        }
-                        for (let i = 0; i < dataHolder.comittee.length; i++) {
-                            self.addCommiteeProject(response.idProject,dataHolder.comittee[i].id)                        
-                        } 
+                        // for (let i = 0; i < dataHolder.student.length; i++) {
+                        //     self.addStudentProject(response.idProject,dataHolder.student[i].id)                        
+                        // }
+                        // for (let i = 0; i < dataHolder.comittee.length; i++) {
+                        //     self.addCommiteeProject(response.idProject,dataHolder.comittee[i].id)                        
+                        // } 
                         Swal({
                         type: 'success',
                         title: 'Oops...',
-                        text: "Add project success",
+                        text: "Edit project success",
                         }).then((result) => {
                             if (result.value) {
                                 window.location = "Student.html";
@@ -317,7 +348,7 @@
         <div id="page-wrapper">
             <h3 class="mb-3" style="font-weight: bold ;text-shadow: 2px 2px #D3D3D3;">Welcome Student</h3>
             <div class="container" style="padding: 30px">
-                <h3 class="mb-3" style="font-weight: bold;text-shadow: 2px 2px #D3D3D3;">Adding Project</h3>
+                <h3 class="mb-3" style="font-weight: bold;text-shadow: 2px 2px #D3D3D3;">Edit Project</h3>
                 <div class="text-right" style=" margin-bottom:20px">
                     <button id="btnModalAddProject" type="button" class="btn btn-danger">
                         Back
